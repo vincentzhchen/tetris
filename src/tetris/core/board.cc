@@ -98,3 +98,5 @@ void Board::draw_shape(Shape *shape, int row, int col, int rotation) {
         board[r + row][c + col - 4] = s[r][c];
     }
 }
+
+void Board::save_state() { fixed_board = board; }

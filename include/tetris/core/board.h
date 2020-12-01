@@ -13,6 +13,7 @@ class Board {
   void draw();
   void draw_shape(Shape *shape, int row, int col, int rotation);
   bool is_collide(Shape *shape, int row, int col, int rotation);
+  void save_state();
 
  private:
   int width;   // nun cols
