@@ -43,6 +43,7 @@ void KeyPress::update_key_press() {
     kp = keyns::Key::NONE;
   }
   disable_raw_mode();
+  key_press = kp;
 }
 
 keyns::Key KeyPress::get_key_press() { return key_press; }
