@@ -1,5 +1,7 @@
 #include <tetris/core/board.h>
 #include <tetris/core/shape.h>
+#include <tetris/util/user_input.h>
+#include <unistd.h>
 
 #include <iostream>
 #include <vector>
@@ -8,17 +10,46 @@ int main() {
   system("clear");  // always clear terminal first
 
   // setup
-  int curr_rotation = 0;  // this can be randomized in the future
-  int curr_col = -1;      // -1 here for initial spawn
-  int curr_row = 0;
-
   Board board;
-
-  // spawn a shape
-  Shape *shape = get_random_shape();
+  int curr_rotation = 0;  // this can be randomized in the future
+  int curr_col = board.get_board_width() / 2;  // initial spawn in middle
+  int curr_row = 0;
+  Shape *shape = get_random_shape();  // spawn a shape
+  // Shape *shape = get_shape('T');  // spawn a shape
 
   board.draw_shape(shape, curr_row, curr_col, curr_rotation);
   board.draw();
 
+  KeyPress kp;
+  bool game_over = false;
+  while (!game_over) {
+    kp.update_key_press();
+
+    if (kp.is_left()) {
+      if (!board.is_collide(shape, curr_row, curr_col - 2, curr_rotation)) {
+        curr_col -= 2;
+        board.draw_shape(shape, curr_row, curr_col, curr_rotation);
+      }
+    }
+
+    if (kp.is_right()) {
+      if (!board.is_collide(shape, curr_row, curr_col + 2, curr_rotation)) {
+        curr_col += 2;
+        board.draw_shape(shape, curr_row, curr_col, curr_rotation);
+      }
+    }
+
+    if (kp.is_down()) {
+      if (!board.is_collide(shape, curr_row + 1, curr_col, curr_rotation)) {
+        curr_row += 1;
+        board.draw_shape(shape, curr_row, curr_col, curr_rotation);
+      }
+    }
+
+    board.draw();
+
+    usleep(150000);  // this is in microseconds
+
+  }  // end while loop
   return 0;
 }
