@@ -46,6 +46,15 @@ int main() {
       }
     }
 
+    if (kp.is_up()) {
+      if (!board.is_collide(shape, curr_row + 1, curr_col,
+                            curr_rotation + 90)) {
+        curr_rotation += 90;
+        curr_rotation = curr_rotation > 270 ? 0 : curr_rotation;
+        board.draw_shape(shape, curr_row, curr_col, curr_rotation);
+      }
+    }
+
     board.draw();
 
     usleep(150000);  // this is in microseconds
