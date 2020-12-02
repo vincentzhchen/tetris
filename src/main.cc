@@ -43,24 +43,19 @@ int main() {
   while (!game_over) {
     kp.update_key_press();
 
-    if (kp.is_left()) {
-      if (!board.is_collide(shape, curr_row, curr_col - 2, curr_rotation)) {
+    if (kp.is_left())
+      if (!board.is_collide(shape, curr_row, curr_col - 2, curr_rotation))
         curr_col -= 2;
-      }
-    }
 
-    if (kp.is_right()) {
-      if (!board.is_collide(shape, curr_row, curr_col + 2, curr_rotation)) {
+    if (kp.is_right())
+      if (!board.is_collide(shape, curr_row, curr_col + 2, curr_rotation))
         curr_col += 2;
-      }
-    }
 
-    if (kp.is_down()) {
-      if (!board.is_collide(shape, curr_row + 1, curr_col, curr_rotation)) {
+    if (kp.is_down())
+      if (!board.is_collide(shape, curr_row + 1, curr_col, curr_rotation))
         curr_row += 1;
-      }
-    }
 
+    // rotations must be modulo 360 here to prevent possible overflow
     if (kp.is_up()) {
       if (!board.is_collide(shape, curr_row, curr_col,
                             (curr_rotation + 90) % 360)) {
