@@ -29,11 +29,11 @@ class Shape {
   virtual std::vector<std::vector<char>> get_orientation(int rotation = 0);
 
  private:
-  std::string shape_name = "BaseShape";
-  std::vector<std::vector<char>> base;
-  std::vector<std::vector<char>> rotate_90;
-  std::vector<std::vector<char>> rotate_180;
-  std::vector<std::vector<char>> rotate_270;
+  const std::string shape_name = "BaseShape";
+  const std::vector<std::vector<char>> base;
+  const std::vector<std::vector<char>> rotate_90;
+  const std::vector<std::vector<char>> rotate_180;
+  const std::vector<std::vector<char>> rotate_270;
 };
 
 class ShapeI : public Shape {
@@ -42,21 +42,23 @@ class ShapeI : public Shape {
   virtual std::vector<std::vector<char>> get_orientation(int rotation = 0);
 
  private:
-  std::string shape_name = "Shape I";
+  const std::string shape_name = "Shape I";
 
   // ........
   // [][][][]
   // ........
   // ........
-  std::vector<std::vector<char>> base{{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-                                      {'[', ']', '[', ']', '[', ']', '[', ']'},
-                                      {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-                                      {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}};
+  const std::vector<std::vector<char>> base{
+      {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+      {'[', ']', '[', ']', '[', ']', '[', ']'},
+      {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+      {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}};
+
   // ....[]..
   // ....[]..
   // ....[]..
   // ....[]..
-  std::vector<std::vector<char>> rotate_90{
+  const std::vector<std::vector<char>> rotate_90{
       {' ', ' ', ' ', ' ', '[', ']', ' ', ' '},
       {' ', ' ', ' ', ' ', '[', ']', ' ', ' '},
       {' ', ' ', ' ', ' ', '[', ']', ' ', ' '},
@@ -66,7 +68,7 @@ class ShapeI : public Shape {
   // ........
   // [][][][]
   // ........
-  std::vector<std::vector<char>> rotate_180{
+  const std::vector<std::vector<char>> rotate_180{
       {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
       {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
       {'[', ']', '[', ']', '[', ']', '[', ']'},
@@ -76,7 +78,7 @@ class ShapeI : public Shape {
   // ..[]....
   // ..[]....
   // ..[]....
-  std::vector<std::vector<char>> rotate_270{
+  const std::vector<std::vector<char>> rotate_270{
       {' ', ' ', '[', ']', ' ', ' ', ' ', ' '},
       {' ', ' ', '[', ']', ' ', ' ', ' ', ' '},
       {' ', ' ', '[', ']', ' ', ' ', ' ', ' '},
@@ -89,34 +91,38 @@ class ShapeJ : public Shape {
   virtual std::vector<std::vector<char>> get_orientation(int rotation = 0);
 
  private:
-  std::string shape_name = "Shape J";
+  const std::string shape_name = "Shape J";
 
   // []....
   // [][][]
   // ......
-  std::vector<std::vector<char>> base{{'[', ']', ' ', ' ', ' ', ' '},
-                                      {'[', ']', '[', ']', '[', ']'},
-                                      {' ', ' ', ' ', ' ', ' ', ' '}};
+  const std::vector<std::vector<char>> base{{'[', ']', ' ', ' ', ' ', ' '},
+                                            {'[', ']', '[', ']', '[', ']'},
+                                            {' ', ' ', ' ', ' ', ' ', ' '}};
+
   // ..[][]
   // ..[]..
   // ..[]..
-  std::vector<std::vector<char>> rotate_90{{' ', ' ', '[', ']', '[', ']'},
-                                           {' ', ' ', '[', ']', ' ', ' '},
-                                           {' ', ' ', '[', ']', ' ', ' '}};
+  const std::vector<std::vector<char>> rotate_90{
+      {' ', ' ', '[', ']', '[', ']'},
+      {' ', ' ', '[', ']', ' ', ' '},
+      {' ', ' ', '[', ']', ' ', ' '}};
 
   // ......
   // [][][]
   // ....[]
-  std::vector<std::vector<char>> rotate_180{{' ', ' ', ' ', ' ', ' ', ' '},
-                                            {'[', ']', '[', ']', '[', ']'},
-                                            {' ', ' ', ' ', ' ', '[', ']'}};
+  const std::vector<std::vector<char>> rotate_180{
+      {' ', ' ', ' ', ' ', ' ', ' '},
+      {'[', ']', '[', ']', '[', ']'},
+      {' ', ' ', ' ', ' ', '[', ']'}};
 
   // ..[]..
   // ..[]..
   // [][]..
-  std::vector<std::vector<char>> rotate_270{{' ', ' ', '[', ']', ' ', ' '},
-                                            {' ', ' ', '[', ']', ' ', ' '},
-                                            {'[', ']', '[', ']', ' ', ' '}};
+  const std::vector<std::vector<char>> rotate_270{
+      {' ', ' ', '[', ']', ' ', ' '},
+      {' ', ' ', '[', ']', ' ', ' '},
+      {'[', ']', '[', ']', ' ', ' '}};
 };
 
 class ShapeL : public Shape {
@@ -125,34 +131,38 @@ class ShapeL : public Shape {
   virtual std::vector<std::vector<char>> get_orientation(int rotation = 0);
 
  private:
-  std::string shape_name = "Shape L";
+  const std::string shape_name = "Shape L";
 
   // ....[]
   // [][][]
   // ......
-  std::vector<std::vector<char>> base{{' ', ' ', ' ', ' ', '[', ']'},
-                                      {'[', ']', '[', ']', '[', ']'},
-                                      {' ', ' ', ' ', ' ', ' ', ' '}};
+  const std::vector<std::vector<char>> base{{' ', ' ', ' ', ' ', '[', ']'},
+                                            {'[', ']', '[', ']', '[', ']'},
+                                            {' ', ' ', ' ', ' ', ' ', ' '}};
+
   // ..[]..
   // ..[]..
   // ..[][]
-  std::vector<std::vector<char>> rotate_90{{' ', ' ', '[', ']', ' ', ' '},
-                                           {' ', ' ', '[', ']', ' ', ' '},
-                                           {' ', ' ', '[', ']', '[', ']'}};
+  const std::vector<std::vector<char>> rotate_90{
+      {' ', ' ', '[', ']', ' ', ' '},
+      {' ', ' ', '[', ']', ' ', ' '},
+      {' ', ' ', '[', ']', '[', ']'}};
 
   // ......
   // [][][]
   // []....
-  std::vector<std::vector<char>> rotate_180{{' ', ' ', ' ', ' ', ' ', ' '},
-                                            {'[', ']', '[', ']', '[', ']'},
-                                            {'[', ']', ' ', ' ', ' ', ' '}};
+  const std::vector<std::vector<char>> rotate_180{
+      {' ', ' ', ' ', ' ', ' ', ' '},
+      {'[', ']', '[', ']', '[', ']'},
+      {'[', ']', ' ', ' ', ' ', ' '}};
 
   // [][]..
   // ..[]..
   // ..[]..
-  std::vector<std::vector<char>> rotate_270{{'[', ']', '[', ']', ' ', ' '},
-                                            {' ', ' ', '[', ']', ' ', ' '},
-                                            {' ', ' ', '[', ']', ' ', ' '}};
+  const std::vector<std::vector<char>> rotate_270{
+      {'[', ']', '[', ']', ' ', ' '},
+      {' ', ' ', '[', ']', ' ', ' '},
+      {' ', ' ', '[', ']', ' ', ' '}};
 };
 
 class ShapeO : public Shape {
@@ -161,19 +171,20 @@ class ShapeO : public Shape {
   virtual std::vector<std::vector<char>> get_orientation(int rotation = 0);
 
  private:
-  std::string shape_name = "Shape O";
+  const std::string shape_name = "Shape O";
 
   // ..[][]..
   // ..[][]..
   // ........
   // ........
-  std::vector<std::vector<char>> base{{' ', ' ', '[', ']', '[', ']', ' ', ' '},
-                                      {' ', ' ', '[', ']', '[', ']', ' ', ' '},
-                                      {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-                                      {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}};
-  std::vector<std::vector<char>> rotate_90 = base;
-  std::vector<std::vector<char>> rotate_180 = base;
-  std::vector<std::vector<char>> rotate_270 = base;
+  const std::vector<std::vector<char>> base{
+      {' ', ' ', '[', ']', '[', ']', ' ', ' '},
+      {' ', ' ', '[', ']', '[', ']', ' ', ' '},
+      {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+      {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}};
+  const std::vector<std::vector<char>> &rotate_90 = base;
+  const std::vector<std::vector<char>> &rotate_180 = base;
+  const std::vector<std::vector<char>> &rotate_270 = base;
 };
 
 class ShapeS : public Shape {
@@ -182,70 +193,78 @@ class ShapeS : public Shape {
   virtual std::vector<std::vector<char>> get_orientation(int rotation = 0);
 
  private:
-  std::string shape_name = "Shape S";
+  const std::string shape_name = "Shape S";
 
   // ..[][]
   // [][]..
   // ......
-  std::vector<std::vector<char>> base{{' ', ' ', '[', ']', '[', ']'},
-                                      {'[', ']', '[', ']', ' ', ' '},
-                                      {' ', ' ', ' ', ' ', ' ', ' '}};
+  const std::vector<std::vector<char>> base{{' ', ' ', '[', ']', '[', ']'},
+                                            {'[', ']', '[', ']', ' ', ' '},
+                                            {' ', ' ', ' ', ' ', ' ', ' '}};
+
   // ..[]..
   // ..[][]
   // ....[]
-  std::vector<std::vector<char>> rotate_90{{' ', ' ', '[', ']', ' ', ' '},
-                                           {' ', ' ', '[', ']', '[', ']'},
-                                           {' ', ' ', ' ', ' ', '[', ']'}};
+  const std::vector<std::vector<char>> rotate_90{
+      {' ', ' ', '[', ']', ' ', ' '},
+      {' ', ' ', '[', ']', '[', ']'},
+      {' ', ' ', ' ', ' ', '[', ']'}};
 
   // ......
   // ..[][]
   // [][]..
-  std::vector<std::vector<char>> rotate_180{{' ', ' ', ' ', ' ', ' ', ' '},
-                                            {' ', ' ', '[', ']', '[', ']'},
-                                            {'[', ']', '[', ']', ' ', ' '}};
+  const std::vector<std::vector<char>> rotate_180{
+      {' ', ' ', ' ', ' ', ' ', ' '},
+      {' ', ' ', '[', ']', '[', ']'},
+      {'[', ']', '[', ']', ' ', ' '}};
 
   // []...
   // [][]..
   // ..[]..
-  std::vector<std::vector<char>> rotate_270{{'[', ']', ' ', ' ', ' ', ' '},
-                                            {'[', ']', '[', ']', ' ', ' '},
-                                            {' ', ' ', '[', ']', ' ', ' '}};
+  const std::vector<std::vector<char>> rotate_270{
+      {'[', ']', ' ', ' ', ' ', ' '},
+      {'[', ']', '[', ']', ' ', ' '},
+      {' ', ' ', '[', ']', ' ', ' '}};
 };
 
 class ShapeT : public Shape {
  public:
   virtual std::string name();
-  virtual std::vector<std::vector<char>> get_orientation(int rotation = 0);
+    virtual std::vector<std::vector<char>> get_orientation(int rotation = 0);
 
  private:
-  std::string shape_name = "Shape T";
+  const std::string shape_name = "Shape T";
 
   // ..[]..
   // [][][]
   // ......
-  std::vector<std::vector<char>> base{{' ', ' ', '[', ']', ' ', ' '},
-                                      {'[', ']', '[', ']', '[', ']'},
-                                      {' ', ' ', ' ', ' ', ' ', ' '}};
+  const std::vector<std::vector<char>> base{{' ', ' ', '[', ']', ' ', ' '},
+                                            {'[', ']', '[', ']', '[', ']'},
+                                            {' ', ' ', ' ', ' ', ' ', ' '}};
+
   // ..[]..
   // ..[][]
   // ..[]..
-  std::vector<std::vector<char>> rotate_90{{' ', ' ', '[', ']', ' ', ' '},
-                                           {' ', ' ', '[', ']', '[', ']'},
-                                           {' ', ' ', '[', ']', ' ', ' '}};
+  const std::vector<std::vector<char>> rotate_90{
+      {' ', ' ', '[', ']', ' ', ' '},
+      {' ', ' ', '[', ']', '[', ']'},
+      {' ', ' ', '[', ']', ' ', ' '}};
 
   // ......
   // [][][]
   // ..[]..
-  std::vector<std::vector<char>> rotate_180{{' ', ' ', ' ', ' ', ' ', ' '},
-                                            {'[', ']', '[', ']', '[', ']'},
-                                            {' ', ' ', '[', ']', ' ', ' '}};
+  const std::vector<std::vector<char>> rotate_180{
+      {' ', ' ', ' ', ' ', ' ', ' '},
+      {'[', ']', '[', ']', '[', ']'},
+      {' ', ' ', '[', ']', ' ', ' '}};
 
   // ..[]..
   // [][]..
   // ..[]..
-  std::vector<std::vector<char>> rotate_270{{' ', ' ', '[', ']', ' ', ' '},
-                                            {'[', ']', '[', ']', ' ', ' '},
-                                            {' ', ' ', '[', ']', ' ', ' '}};
+  const std::vector<std::vector<char>> rotate_270{
+      {' ', ' ', '[', ']', ' ', ' '},
+      {'[', ']', '[', ']', ' ', ' '},
+      {' ', ' ', '[', ']', ' ', ' '}};
 };
 
 class ShapeZ : public Shape {
@@ -254,34 +273,38 @@ class ShapeZ : public Shape {
   virtual std::vector<std::vector<char>> get_orientation(int rotation = 0);
 
  private:
-  std::string shape_name = "Shape Z";
+  const std::string shape_name = "Shape Z";
 
   // [][]..
   // ..[][]
   // ......
-  std::vector<std::vector<char>> base{{'[', ']', '[', ']', ' ', ' '},
-                                      {' ', ' ', '[', ']', '[', ']'},
-                                      {' ', ' ', ' ', ' ', ' ', ' '}};
+  const std::vector<std::vector<char>> base{{'[', ']', '[', ']', ' ', ' '},
+                                            {' ', ' ', '[', ']', '[', ']'},
+                                            {' ', ' ', ' ', ' ', ' ', ' '}};
+
   // ....[]
   // ..[][]
   // ..[]..
-  std::vector<std::vector<char>> rotate_90{{' ', ' ', ' ', ' ', '[', ']'},
-                                           {' ', ' ', '[', ']', '[', ']'},
-                                           {' ', ' ', '[', ']', ' ', ' '}};
+  const std::vector<std::vector<char>> rotate_90{
+      {' ', ' ', ' ', ' ', '[', ']'},
+      {' ', ' ', '[', ']', '[', ']'},
+      {' ', ' ', '[', ']', ' ', ' '}};
 
   // ......
   // [][]..
   // ..[][]
-  std::vector<std::vector<char>> rotate_180{{' ', ' ', ' ', ' ', ' ', ' '},
-                                            {'[', ']', '[', ']', ' ', ' '},
-                                            {' ', ' ', '[', ']', '[', ']'}};
+  const std::vector<std::vector<char>> rotate_180{
+      {' ', ' ', ' ', ' ', ' ', ' '},
+      {'[', ']', '[', ']', ' ', ' '},
+      {' ', ' ', '[', ']', '[', ']'}};
 
   // ..[]..
   // [][]..
   // []....
-  std::vector<std::vector<char>> rotate_270{{' ', ' ', '[', ']', ' ', ' '},
-                                            {'[', ']', '[', ']', ' ', ' '},
-                                            {'[', ']', ' ', ' ', ' ', ' '}};
+  const std::vector<std::vector<char>> rotate_270{
+      {' ', ' ', '[', ']', ' ', ' '},
+      {'[', ']', '[', ']', ' ', ' '},
+      {'[', ']', ' ', ' ', ' ', ' '}};
 };
 
 Shape *get_shape(char shape);
