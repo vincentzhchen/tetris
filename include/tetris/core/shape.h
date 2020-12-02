@@ -230,7 +230,7 @@ class ShapeS : public Shape {
 class ShapeT : public Shape {
  public:
   virtual std::string name();
-    virtual std::vector<std::vector<char>> get_orientation(int rotation = 0);
+  virtual std::vector<std::vector<char>> get_orientation(int rotation = 0);
 
  private:
   const std::string shape_name = "Shape T";
