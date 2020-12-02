@@ -17,6 +17,7 @@ class Board {
   bool is_valid_board();
   std::vector<int> get_line(Shape *shape, int row, int col, int rotation);
   void draw_line(std::vector<int> row);
+  int clear_line(std::vector<int> row);
 
  private:
   int width;   // nun cols

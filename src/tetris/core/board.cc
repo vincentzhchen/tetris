@@ -1,5 +1,6 @@
 #include <tetris/core/board.h>
 
+#include <algorithm>
 #include <iostream>
 
 /**
@@ -111,17 +112,42 @@ std::vector<int> Board::get_line(Shape *shape, int row, int col, int rotation) {
   std::vector<std::vector<char>> s = shape->get_orientation(rotation);
   std::vector<int> line_num;
   // for the placed shape...
-  for (size_t r = 0; r < s.size(); r++)
-    // if there is a space between the boarder, then there is no line
-    for (size_t c = 2; c < fixed_board.size() - 2; c++)
-      if (fixed_board[r + row][c] != ' ') {
-        line_num.push_back(r);
-        break;
+  for (size_t r = 0; r < s.size(); r++) {
+    int check_row = r + row;
+    if (check_row < get_board_height()) {
+      // if there is only 2 white space from boarder, this is a line
+      if (std::count(fixed_board[r + row].begin(), fixed_board[r + row].end(),
+                     ' ') == 2) {
+        line_num.push_back(check_row);
       }
+    }  // bottom border guard
+  }    // for loop
   return line_num;
 }
 
 void Board::draw_line(std::vector<int> row) {
   for (size_t r = 0; r < row.size(); r++)
-    for (int c = 2; c < get_board_width() - 2; c++) fixed_board[r][c] = '=';
+    for (int c = 2; c < get_board_width() - 2; c++) board[row[r]][c] = '=';
+}
+
+int Board ::clear_line(std::vector<int> row) {
+  int num_rows_to_modify = row.size();
+  if (num_rows_to_modify == 0) return 0;
+
+  board.erase(board.begin() + row[0],
+              board.begin() + row[0] + num_rows_to_modify);
+
+  // insert back deleted rows at the top
+  std::vector<char> blank_row;
+  for (int i = 0; i < get_board_width(); i++) {
+    if (i == 1 || i == get_board_width() - 2)
+      blank_row.push_back('|');
+    else
+      blank_row.push_back(' ');
+  }
+
+  for (int i = 0; i < num_rows_to_modify; i++)
+    board.insert(board.begin() + 4, blank_row);
+
+  return num_rows_to_modify;
 }

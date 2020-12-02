@@ -11,11 +11,13 @@ int main() {
 
   // setup
   Board board;
-  int curr_rotation = 0;  // this can be randomized in the future
+  int score = 0;
+
+  int curr_rotation = 270;  // this can be randomized in the future
   int curr_col = board.get_board_width() / 2;  // initial spawn in middle
   int curr_row = 0;
   // Shape *shape = get_random_shape();  // spawn a shape
-  Shape *shape = get_shape('T');  // spawn a shape
+  Shape *shape = get_shape('O');  // spawn a shape
 
   board.draw_shape(shape, curr_row, curr_col, curr_rotation);
   board.draw();
@@ -44,10 +46,9 @@ int main() {
     }
 
     if (kp.is_up()) {
-      if (!board.is_collide(shape, curr_row + 1, curr_col,
-                            curr_rotation + 90)) {
+      if (!board.is_collide(shape, curr_row, curr_col, curr_rotation + 90)) {
         curr_rotation += 90;
-        curr_rotation = curr_rotation > 270 ? 0 : curr_rotation;
+        curr_rotation %= 360;
       }
     }
 
@@ -62,24 +63,31 @@ int main() {
     } else {  // otherwise save state of board
       board.save_state();
 
-      curr_rotation = 0;  // this can be randomized in the future
-      curr_col = board.get_board_width() / 2;  // initial spawn in middle
-      curr_row = 0;
-      shape = get_random_shape();  // spawn another shape
-      // shape = get_shape('O');  // spawn a shape
+      // check for line clear
+      std::vector<int> line_num =
+          board.get_line(shape, curr_row, curr_col, curr_rotation);
+      board.draw_line(line_num);
+      board.save_state();
+      board.draw();
 
-      // // check for line clear
-      // std::vector<int> line_num =
-      //     board.get_line(shape, curr_row, curr_col, curr_rotation);
-      // board.draw_line(line_num);
-      // board.save_state();
-      // board.draw();
+      usleep(50000);
+      int num_lines = board.clear_line(line_num);
+      score += num_lines % 4 != 0 ? 25 * num_lines : 100 * num_lines;
+      board.save_state();
 
-      // // check if the saved board is good
-      // board.save_state();
-      if (!board.is_valid_board()) game_over = true;
+      // check if the saved board is good
+      if (board.is_valid_board()) {  // reset state if it is
+        curr_rotation = 0;           // this can be randomized in the future
+        curr_col = board.get_board_width() / 2;  // initial spawn in middle
+        curr_row = 0;
+        shape = get_random_shape();  // spawn another shape
+      } else {                       // game over
+        game_over = true;
+      }
     }
+
     board.draw();
+    std::cout << "SCORE: " << score << std::endl;
   }  // end while loop
   return 0;
 }
