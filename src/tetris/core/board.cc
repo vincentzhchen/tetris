@@ -146,6 +146,9 @@ void Board::draw_line(std::vector<int> row) {
     for (int c = 2; c < get_board_width() - 2; c++) board[row[r]][c] = '=';
 }
 
+/**
+ * Clear lines and return number of lines cleared.
+ */
 int Board ::clear_line(std::vector<int> row) {
   int num_rows_to_modify = row.size();
   if (num_rows_to_modify == 0) return 0;

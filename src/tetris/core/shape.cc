@@ -185,30 +185,3 @@ std::vector<std::vector<char>> ShapeZ::get_orientation(int rotation) {
   }
   return s;
 }
-
-Shape *get_shape(char shape) {
-  if (shape == 'I') {
-    return new ShapeI();
-  } else if (shape == 'J') {
-    return new ShapeJ();
-  } else if (shape == 'L') {
-    return new ShapeL();
-  } else if (shape == 'O') {
-    return new ShapeO();
-  } else if (shape == 'S') {
-    return new ShapeS();
-  } else if (shape == 'T') {
-    return new ShapeT();
-  } else {
-    return new ShapeZ();
-  }
-}
-
-Shape *get_random_shape() {
-  char choices[] = "IJLOSTZ";  // all the kinds of shapes
-  std::random_device rand_dev;
-  std::mt19937 generator(rand_dev());
-  std::uniform_int_distribution<int> uniform(0, 6);
-  char choice = choices[uniform(generator)];
-  return get_shape(choice);
-}

@@ -15,6 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include <tetris/core/board.h>
+#include <tetris/core/game_state.h>
 #include <tetris/core/shape.h>
 #include <tetris/util/user_input.h>
 #include <unistd.h>
@@ -26,13 +27,13 @@ int main() {
   system("clear");  // always clear terminal first
 
   // setup
+  GameState state;
   Board board;
-  int score = 0;
 
   int curr_rotation = 270;  // this can be randomized in the future
   int curr_col = board.get_board_width() / 2;  // initial spawn in middle
   int curr_row = 0;
-  Shape *shape = get_random_shape();  // spawn a shape
+  Shape *shape = state.get_random_shape();  // spawn a shape
   // Shape *shape = get_shape('T');  // specific shape for debugging
 
   board.draw_shape(shape, curr_row, curr_col, curr_rotation);
@@ -84,7 +85,7 @@ int main() {
 
       usleep(50000);
       int num_lines = board.clear_line(line_num);
-      score += num_lines % 4 != 0 ? 25 * num_lines : 100 * num_lines;
+      state.update_score(num_lines);
       board.save_state();
 
       // check if the saved board is good
@@ -92,14 +93,14 @@ int main() {
         curr_rotation = 0;           // this can be randomized in the future
         curr_col = board.get_board_width() / 2;  // initial spawn in middle
         curr_row = 0;
-        shape = get_random_shape();  // spawn another shape
-      } else {                       // game over
+        shape = state.get_random_shape();  // spawn another shape
+      } else {                             // game over
         game_over = true;
       }
     }
 
     board.draw();
-    std::cout << "SCORE: " << score << std::endl;
+    std::cout << "SCORE: " << state.score() << std::endl;
   }  // end while loop
   return 0;
 }

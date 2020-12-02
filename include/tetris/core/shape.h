@@ -306,7 +306,3 @@ class ShapeZ : public Shape {
       {'[', ']', '[', ']', ' ', ' '},
       {'[', ']', ' ', ' ', ' ', ' '}};
 };
-
-Shape *get_shape(char shape);
-
-Shape *get_random_shape();
