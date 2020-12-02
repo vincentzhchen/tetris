@@ -24,16 +24,25 @@ class Board {
  public:
   // standard board size is 10 wide and 20 high
   explicit Board(int height = 20, int width = 10);  // constructor
+
+  // setters and getters
+  void save_state();
+  std::vector<int> get_line(Shape *shape, const int &row, const int &col,
+                            const int &rotation);
   int get_board_height();
   int get_board_width();
+
+  // drawing
   void draw();
-  void draw_shape(Shape *shape, int row, int col, int rotation);
-  bool is_collide(Shape *shape, int row, int col, int rotation);
-  void save_state();
-  bool is_valid_board();
-  std::vector<int> get_line(Shape *shape, int row, int col, int rotation);
-  void draw_line(std::vector<int> row);
+  void draw_shape(Shape *shape, const int &row, const int &col,
+                  const int &rotation);
+  void draw_line(std::vector<int> const &row);
   int clear_line(std::vector<int> row);
+
+  // logic
+  bool is_collide(Shape *shape, const int &row, const int &col,
+                  const int &rotation);
+  bool is_valid_board();
 
  private:
   int width;   // nun cols

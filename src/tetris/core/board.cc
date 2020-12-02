@@ -87,14 +87,15 @@ int Board::get_board_width() { return width; }
 /**
  * Let the board check for collision since it has access to all the data.
  */
-bool Board::is_collide(Shape *shape, int row, int col, int rotation) {
+bool Board::is_collide(Shape *shape, const int &row, const int &col,
+                       const int &rotation) {
   std::vector<std::vector<char>> s = shape->get_orientation(rotation);
-  col -= 4;  // remove offset
   for (size_t r = 0; r < s.size(); r++)
     // s.size() * 2 because using double spacing tiles: []
     for (size_t c = 0; c < s.size() * 2; c++) {
       if ((s[r][c] == '[' || s[r][c] == ']') &&
-          (fixed_board[r + row][c + col] != ' '))
+          // - 4 to remove offset from wall
+          (fixed_board[r + row][c + col - 4] != ' '))
         return true;
     }
 
@@ -104,7 +105,8 @@ bool Board::is_collide(Shape *shape, int row, int col, int rotation) {
 /**
  * This draws a shape onto the board.  Nothing to console.
  */
-void Board::draw_shape(Shape *shape, int row, int col, int rotation) {
+void Board::draw_shape(Shape *shape, const int &row, const int &col,
+                       const int &rotation) {
   set_board(fixed_board);
   std::vector<std::vector<char>> s = shape->get_orientation(rotation);
   for (size_t r = 0; r < s.size(); r++)
@@ -124,7 +126,8 @@ bool Board::is_valid_board() {
   return true;
 }
 
-std::vector<int> Board::get_line(Shape *shape, int row, int col, int rotation) {
+std::vector<int> Board::get_line(Shape *shape, const int &row, const int &col,
+                                 const int &rotation) {
   std::vector<std::vector<char>> s = shape->get_orientation(rotation);
   std::vector<int> line_num;
   // for the placed shape...
@@ -141,7 +144,7 @@ std::vector<int> Board::get_line(Shape *shape, int row, int col, int rotation) {
   return line_num;
 }
 
-void Board::draw_line(std::vector<int> row) {
+void Board::draw_line(const std::vector<int> &row) {
   for (size_t r = 0; r < row.size(); r++)
     for (int c = 2; c < get_board_width() - 2; c++) board[row[r]][c] = '=';
 }
