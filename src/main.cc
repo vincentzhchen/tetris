@@ -14,8 +14,8 @@ int main() {
   int curr_rotation = 0;  // this can be randomized in the future
   int curr_col = board.get_board_width() / 2;  // initial spawn in middle
   int curr_row = 0;
-  Shape *shape = get_random_shape();  // spawn a shape
-  // Shape *shape = get_shape('T');  // spawn a shape
+  // Shape *shape = get_random_shape();  // spawn a shape
+  Shape *shape = get_shape('T');  // spawn a shape
 
   board.draw_shape(shape, curr_row, curr_col, curr_rotation);
   board.draw();
@@ -51,21 +51,35 @@ int main() {
       }
     }
 
-    board.draw();
+    // board.draw();
     board.draw_shape(shape, curr_row, curr_col, curr_rotation);
 
     usleep(150000);  // this is in microseconds
 
-    // apply gravity
-    curr_row++;
-    if (board.is_collide(shape, curr_row, curr_col, curr_rotation)) {
+    // apply gravity if no collision
+    if (!board.is_collide(shape, curr_row + 1, curr_col, curr_rotation)) {
+      curr_row++;
+    } else {  // otherwise save state of board
+      board.save_state();
+
       curr_rotation = 0;  // this can be randomized in the future
       curr_col = board.get_board_width() / 2;  // initial spawn in middle
       curr_row = 0;
       shape = get_random_shape();  // spawn another shape
-      board.save_state();
-    }
+      // shape = get_shape('O');  // spawn a shape
 
+      // // check for line clear
+      // std::vector<int> line_num =
+      //     board.get_line(shape, curr_row, curr_col, curr_rotation);
+      // board.draw_line(line_num);
+      // board.save_state();
+      // board.draw();
+
+      // // check if the saved board is good
+      // board.save_state();
+      if (!board.is_valid_board()) game_over = true;
+    }
+    board.draw();
   }  // end while loop
   return 0;
 }

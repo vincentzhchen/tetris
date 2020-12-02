@@ -14,6 +14,9 @@ class Board {
   void draw_shape(Shape *shape, int row, int col, int rotation);
   bool is_collide(Shape *shape, int row, int col, int rotation);
   void save_state();
+  bool is_valid_board();
+  std::vector<int> get_line(Shape *shape, int row, int col, int rotation);
+  void draw_line(std::vector<int> row);
 
  private:
   int width;   // nun cols

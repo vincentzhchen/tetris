@@ -100,3 +100,28 @@ void Board::draw_shape(Shape *shape, int row, int col, int rotation) {
 }
 
 void Board::save_state() { fixed_board = board; }
+
+bool Board::is_valid_board() {
+  for (size_t c = 0; c < fixed_board[3].size(); c++)
+    if (fixed_board[3][c] != ' ') return false;
+  return true;
+}
+
+std::vector<int> Board::get_line(Shape *shape, int row, int col, int rotation) {
+  std::vector<std::vector<char>> s = shape->get_orientation(rotation);
+  std::vector<int> line_num;
+  // for the placed shape...
+  for (size_t r = 0; r < s.size(); r++)
+    // if there is a space between the boarder, then there is no line
+    for (size_t c = 2; c < fixed_board.size() - 2; c++)
+      if (fixed_board[r + row][c] != ' ') {
+        line_num.push_back(r);
+        break;
+      }
+  return line_num;
+}
+
+void Board::draw_line(std::vector<int> row) {
+  for (size_t r = 0; r < row.size(); r++)
+    for (int c = 2; c < get_board_width() - 2; c++) fixed_board[r][c] = '=';
+}
