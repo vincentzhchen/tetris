@@ -58,11 +58,12 @@ class GameState {
                                     new ShapeO(), new ShapeS(), new ShapeT(),
                                     new ShapeZ()};
 
-  // store this for resetting
+  // store this for resetting (created once and never modified)
   int _curr_rotation_init;
   int _curr_row_init;
   int _curr_col_init;
 
+  // modify these
   int _curr_rotation;
   int _curr_row;
   int _curr_col;
