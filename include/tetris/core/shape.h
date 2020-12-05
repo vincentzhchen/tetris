@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include <tetris/constants/color.h>
+
 #include <string>
 #include <vector>
 
@@ -31,7 +33,7 @@ class Shape {
 
  private:
   const std::string shape_name = "BaseShape";
-  const int shape_color = 30;
+  const int shape_color = color::BLACK;
   const std::vector<std::vector<char>> base;
   const std::vector<std::vector<char>> rotate_90;
   const std::vector<std::vector<char>> rotate_180;
@@ -46,7 +48,7 @@ class ShapeI : public Shape {
 
  private:
   const std::string shape_name = "Shape I";
-  const int shape_color = 36;
+  const int shape_color = color::CYAN;
 
   // ........
   // [][][][]
@@ -97,7 +99,7 @@ class ShapeJ : public Shape {
 
  private:
   const std::string shape_name = "Shape J";
-  const int shape_color = 30;
+  const int shape_color = color::BLACK;
 
   // []....
   // [][][]
@@ -139,7 +141,7 @@ class ShapeL : public Shape {
 
  private:
   const std::string shape_name = "Shape L";
-  const int shape_color = 34;
+  const int shape_color = color::BLUE;
 
   // ....[]
   // [][][]
@@ -181,7 +183,7 @@ class ShapeO : public Shape {
 
  private:
   const std::string shape_name = "Shape O";
-  const int shape_color = 33;
+  const int shape_color = color::YELLOW;
 
   // ..[][]..
   // ..[][]..
@@ -205,7 +207,7 @@ class ShapeS : public Shape {
 
  private:
   const std::string shape_name = "Shape S";
-  const int shape_color = 32;
+  const int shape_color = color::GREEN;
 
   // ..[][]
   // [][]..
@@ -247,7 +249,7 @@ class ShapeT : public Shape {
 
  private:
   const std::string shape_name = "Shape T";
-  const int shape_color = 35;
+  const int shape_color = color::MAGENTA;
 
   // ..[]..
   // [][][]
@@ -289,7 +291,7 @@ class ShapeZ : public Shape {
 
  private:
   const std::string shape_name = "Shape Z";
-  const int shape_color = 31;
+  const int shape_color = color::RED;
 
   // [][]..
   // ..[][]
