@@ -18,7 +18,6 @@
 #include <tetris/core/game_state.h>
 #include <tetris/core/shape.h>
 #include <tetris/util/user_input.h>
-#include <unistd.h>
 
 #include <iostream>
 #include <vector>
@@ -27,16 +26,13 @@ int main() {
   system("clear");  // always clear terminal first
 
   // setup
-  GameState state;
   Board board;
-
-  int curr_rotation = 270;  // this can be randomized in the future
-  int curr_col = board.get_board_width() / 2;  // initial spawn in middle
-  int curr_row = 0;
+  GameState state(0, board.get_board_width() / 2, 0);
   Shape *shape = state.get_random_shape();  // spawn a shape
   // Shape *shape = get_shape('T');  // specific shape for debugging
 
-  board.draw_shape(shape, curr_row, curr_col, curr_rotation);
+  // initial spawn
+  board.draw_shape(shape, state.curr_row(), state.curr_col(), state.curr_rot());
   board.draw();
 
   KeyPress kp;
@@ -44,46 +40,47 @@ int main() {
     kp.update_key_press();
 
     if (kp.is_left())
-      if (!board.is_collide(shape, curr_row, curr_col - 2, curr_rotation))
-        curr_col -= 2;
+      if (!board.is_collide(shape, state.curr_row(), state.prev_col(),
+                            state.curr_rot()))
+        state.move_left();
 
     if (kp.is_right())
-      if (!board.is_collide(shape, curr_row, curr_col + 2, curr_rotation))
-        curr_col += 2;
+      if (!board.is_collide(shape, state.curr_row(), state.next_col(),
+                            state.curr_rot()))
+        state.move_right();
 
     if (kp.is_down())
-      if (!board.is_collide(shape, curr_row + 1, curr_col, curr_rotation))
-        curr_row += 1;
+      if (!board.is_collide(shape, state.next_row(), state.curr_col(),
+                            state.curr_rot()))
+        state.move_down();
 
-    // rotations must be modulo 360 here to prevent possible overflow
-    if (kp.is_up()) {
-      if (!board.is_collide(shape, curr_row, curr_col,
-                            (curr_rotation + 90) % 360)) {
-        curr_rotation += 90;
-        curr_rotation %= 360;
-      }
-    }
+    if (kp.is_up())
+      if (!board.is_collide(shape, state.curr_row(), state.curr_col(),
+                            state.next_rot()))
+        state.rotate();
 
-    board.draw_shape(shape, curr_row, curr_col, curr_rotation);
+    board.draw_shape(shape, state.curr_row(), state.curr_col(),
+                     state.curr_rot());
 
     // controls game speed
-    usleep(200000);  // this is in microseconds
+    state.apply_game_speed_delay();
 
     // apply gravity if no collision
-    if (!board.is_collide(shape, curr_row + 1, curr_col, curr_rotation)) {
-      curr_row++;
+    if (!board.is_collide(shape, state.next_row(), state.curr_col(),
+                          state.curr_rot())) {
+      state.move_down();
     } else {  // otherwise save state of board
       board.save_state();
 
       // check for line clear
-      std::vector<int> line_num =
-          board.get_line(shape, curr_row, curr_col, curr_rotation);
+      std::vector<int> line_num = board.get_line(
+          shape, state.curr_row(), state.curr_col(), state.curr_rot());
       board.draw_line(line_num);
       board.save_state();
 
-      // draw the line clear
+      // show the line clear
       board.draw();
-      usleep(50000);  // delay to keep visible
+      state.apply_line_clear_delay();  // delay to keep visible
 
       int num_lines = board.clear_line(line_num);
       state.update_score(num_lines);
@@ -91,9 +88,7 @@ int main() {
 
       // check if the saved board is good
       if (board.is_valid_board()) {  // reset state if it is
-        curr_rotation = 0;           // this can be randomized in the future
-        curr_col = board.get_board_width() / 2;  // initial spawn in middle
-        curr_row = 0;
+        state.reset_position();
         shape = state.get_random_shape();  // spawn another shape
       } else {
         // game over if board is not valid

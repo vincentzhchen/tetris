@@ -15,12 +15,19 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include <tetris/core/game_state.h>
+#include <unistd.h>
 
 #include <random>
 
-GameState::GameState() {
+GameState::GameState(int curr_row, int curr_col, int curr_rot) {
   _game_over = false;
   _score = 0;
+
+  _curr_row_init = curr_row;
+  _curr_col_init = curr_col;
+  _curr_rotation_init = curr_rot;
+
+  reset_position();
 }
 
 const int &GameState::score() { return _score; }
@@ -28,6 +35,17 @@ const int &GameState::score() { return _score; }
 void GameState::update_score(const int &num_lines) {
   _score += num_lines % 4 != 0 ? 25 * num_lines : 100 * num_lines;
 }
+
+const bool &GameState::game_over() { return _game_over; }
+
+void GameState::end_game() { _game_over = true; }
+
+void GameState::apply_game_speed_delay() {
+  // this is in microseconds
+  usleep(200000);
+}
+
+void GameState::apply_line_clear_delay() { usleep(50000); }
 
 Shape *GameState::get_shape(char shape) {
   if (shape == 'I') {
@@ -56,6 +74,20 @@ Shape *GameState::get_random_shape() {
   return get_shape(choice);
 }
 
-const bool &GameState::game_over() { return _game_over; }
+const int &GameState::curr_row() { return _curr_row; }
+const int GameState::next_row() { return curr_row() + 1; }
+const int GameState::prev_col() { return curr_col() - 2; }
+const int &GameState::curr_col() { return _curr_col; }
+const int GameState::next_col() { return curr_col() + 2; }
+const int &GameState::curr_rot() { return _curr_rotation; }
+const int GameState::next_rot() { return (curr_rot() + 90) % 360; }
 
-void GameState::end_game() { _game_over = true; }
+void GameState::move_left() { _curr_col -= 2; }
+void GameState::move_right() { _curr_col += 2; }
+void GameState::move_down() { _curr_row += 1; }
+void GameState::rotate() { _curr_rotation = (_curr_rotation + 90) % 360; }
+void GameState::reset_position() {
+  _curr_rotation = _curr_rotation_init;
+  _curr_row = _curr_row_init;
+  _curr_col = _curr_col_init;
+}

@@ -22,18 +22,48 @@
 
 class GameState {
  public:
-  GameState();
+  GameState(int curr_row, int curr_col, int curr_rot);
+
+  // game management
   const bool &game_over();
   const int &score();
   void update_score(const int &num_lines);
   void end_game();
+  void apply_game_speed_delay();
+  void apply_line_clear_delay();
+
+  // shape management
   Shape *get_shape(char shape);
   Shape *get_random_shape();
+  const int &curr_row();
+  const int next_row();
+  const int prev_col();
+  const int &curr_col();
+  const int next_col();
+  const int &curr_rot();
+  const int next_rot();
+  void move_left();
+  void move_right();
+  void move_down();
+  void rotate();
+  void reset_position();
 
  private:
+  // game management
   bool _game_over;
   int _score;
+
+  // shape management
   std::array<Shape *, 7> all_shapes{new ShapeI(), new ShapeJ(), new ShapeL(),
                                     new ShapeO(), new ShapeS(), new ShapeT(),
                                     new ShapeZ()};
+
+  // store this for resetting
+  int _curr_rotation_init;
+  int _curr_row_init;
+  int _curr_col_init;
+
+  int _curr_rotation;
+  int _curr_row;
+  int _curr_col;
 };
