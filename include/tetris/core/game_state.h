@@ -23,9 +23,10 @@
 class GameState {
  public:
   GameState();
-  const bool &is_game_over();
+  const bool &game_over();
   const int &score();
   void update_score(const int &num_lines);
+  void end_game();
   Shape *get_shape(char shape);
   Shape *get_random_shape();
 

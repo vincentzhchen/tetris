@@ -37,7 +37,7 @@ class Board {
   void draw_shape(Shape *shape, const int &row, const int &col,
                   const int &rotation);
   void draw_line(std::vector<int> const &row);
-  int clear_line(std::vector<int> row);
+  int clear_line(const std::vector<int> &row);
 
   // logic
   bool is_collide(Shape *shape, const int &row, const int &col,

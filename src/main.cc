@@ -40,8 +40,7 @@ int main() {
   board.draw();
 
   KeyPress kp;
-  bool game_over = false;
-  while (!game_over) {
+  while (!state.game_over()) {
     kp.update_key_press();
 
     if (kp.is_left())
@@ -81,9 +80,11 @@ int main() {
           board.get_line(shape, curr_row, curr_col, curr_rotation);
       board.draw_line(line_num);
       board.save_state();
-      board.draw();
 
-      usleep(50000);
+      // draw the line clear
+      board.draw();
+      usleep(50000);  // delay to keep visible
+
       int num_lines = board.clear_line(line_num);
       state.update_score(num_lines);
       board.save_state();
@@ -94,8 +95,9 @@ int main() {
         curr_col = board.get_board_width() / 2;  // initial spawn in middle
         curr_row = 0;
         shape = state.get_random_shape();  // spawn another shape
-      } else {                             // game over
-        game_over = true;
+      } else {
+        // game over if board is not valid
+        state.end_game();
       }
     }
 

@@ -152,9 +152,9 @@ void Board::draw_line(const std::vector<int> &row) {
 /**
  * Clear lines and return number of lines cleared.
  */
-int Board ::clear_line(std::vector<int> row) {
+int Board ::clear_line(const std::vector<int> &row) {
   int num_rows_to_modify = row.size();
-  if (num_rows_to_modify == 0) return 0;
+  if (num_rows_to_modify == 0) return num_rows_to_modify;
 
   board.erase(board.begin() + row[0],
               board.begin() + row[0] + num_rows_to_modify);

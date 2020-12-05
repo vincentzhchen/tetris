@@ -55,3 +55,7 @@ Shape *GameState::get_random_shape() {
   char choice = choices[uniform(generator)];
   return get_shape(choice);
 }
+
+const bool &GameState::game_over() { return _game_over; }
+
+void GameState::end_game() { _game_over = true; }
