@@ -26,10 +26,12 @@ class Shape {
  public:
   // make virtual to access the derived class impl
   virtual std::string name();  // helpful for debugging
+  virtual int color();
   virtual std::vector<std::vector<char>> get_orientation(int rotation = 0);
 
  private:
   const std::string shape_name = "BaseShape";
+  const int shape_color = 30;
   const std::vector<std::vector<char>> base;
   const std::vector<std::vector<char>> rotate_90;
   const std::vector<std::vector<char>> rotate_180;
@@ -39,10 +41,12 @@ class Shape {
 class ShapeI : public Shape {
  public:
   virtual std::string name();
+  virtual int color();
   virtual std::vector<std::vector<char>> get_orientation(int rotation = 0);
 
  private:
   const std::string shape_name = "Shape I";
+  const int shape_color = 36;
 
   // ........
   // [][][][]
@@ -88,10 +92,12 @@ class ShapeI : public Shape {
 class ShapeJ : public Shape {
  public:
   virtual std::string name();
+  virtual int color();
   virtual std::vector<std::vector<char>> get_orientation(int rotation = 0);
 
  private:
   const std::string shape_name = "Shape J";
+  const int shape_color = 30;
 
   // []....
   // [][][]
@@ -128,10 +134,12 @@ class ShapeJ : public Shape {
 class ShapeL : public Shape {
  public:
   virtual std::string name();
+  virtual int color();
   virtual std::vector<std::vector<char>> get_orientation(int rotation = 0);
 
  private:
   const std::string shape_name = "Shape L";
+  const int shape_color = 34;
 
   // ....[]
   // [][][]
@@ -168,10 +176,12 @@ class ShapeL : public Shape {
 class ShapeO : public Shape {
  public:
   virtual std::string name();
+  virtual int color();
   virtual std::vector<std::vector<char>> get_orientation(int rotation = 0);
 
  private:
   const std::string shape_name = "Shape O";
+  const int shape_color = 33;
 
   // ..[][]..
   // ..[][]..
@@ -190,10 +200,12 @@ class ShapeO : public Shape {
 class ShapeS : public Shape {
  public:
   virtual std::string name();
+  virtual int color();
   virtual std::vector<std::vector<char>> get_orientation(int rotation = 0);
 
  private:
   const std::string shape_name = "Shape S";
+  const int shape_color = 32;
 
   // ..[][]
   // [][]..
@@ -230,10 +242,12 @@ class ShapeS : public Shape {
 class ShapeT : public Shape {
  public:
   virtual std::string name();
+  virtual int color();
   virtual std::vector<std::vector<char>> get_orientation(int rotation = 0);
 
  private:
   const std::string shape_name = "Shape T";
+  const int shape_color = 35;
 
   // ..[]..
   // [][][]
@@ -270,10 +284,12 @@ class ShapeT : public Shape {
 class ShapeZ : public Shape {
  public:
   virtual std::string name();
+  virtual int color();
   virtual std::vector<std::vector<char>> get_orientation(int rotation = 0);
 
  private:
   const std::string shape_name = "Shape Z";
+  const int shape_color = 31;
 
   // [][]..
   // ..[][]

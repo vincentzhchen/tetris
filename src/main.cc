@@ -28,8 +28,8 @@ int main() {
   // setup
   Board board;
   GameState state(0, board.get_board_width() / 2, 0);
-  Shape *shape = state.get_random_shape();  // spawn a shape
-  // Shape *shape = get_shape('T');  // specific shape for debugging
+  // Shape *shape = state.get_random_shape();  // spawn a shape
+  Shape *shape = state.get_shape('I');  // specific shape for debugging
 
   // initial spawn
   board.draw_shape(shape, state.curr_row(), state.curr_col(), state.curr_rot());

@@ -49,6 +49,7 @@ class Board {
   int height;  // num rows
   std::vector<std::vector<char>> empty_board;
   std::vector<std::vector<char>> fixed_board;  // holds fixed position items
+  std::vector<std::vector<int>> color_board;   // holds ansi color code
   std::vector<std::vector<char>> board;
 
   void initialize_board(int height, int width);

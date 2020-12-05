@@ -34,6 +34,22 @@ std::string ShapeT::name() { return shape_name; }
 
 std::string ShapeZ::name() { return shape_name; }
 
+int Shape::color() { return shape_color; }
+
+int ShapeI::color() { return shape_color; }
+
+int ShapeJ::color() { return shape_color; }
+
+int ShapeL::color() { return shape_color; }
+
+int ShapeO::color() { return shape_color; }
+
+int ShapeS::color() { return shape_color; }
+
+int ShapeT::color() { return shape_color; }
+
+int ShapeZ::color() { return shape_color; }
+
 std::vector<std::vector<char>> Shape::get_orientation(int rotation) {
   std::vector<std::vector<char>> s;
   switch (rotation) {

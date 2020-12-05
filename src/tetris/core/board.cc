@@ -54,6 +54,15 @@ void Board::initialize_board(int height, int width) {
   }
   set_board(empty_board);
   set_fixed_board(empty_board);
+
+  // color board
+  for (int i = 0; i < height; i++) {
+    std::vector<int> row;
+    for (int j = 0; j < width; j++) {
+      row.push_back(37);  // white
+    }
+    color_board.push_back(row);
+  }
 }
 
 /**
@@ -74,7 +83,11 @@ void Board::draw() {
   system("clear");
   for (int i = 0; i < get_board_height(); i++) {
     for (int j = 0; j < get_board_width(); j++) {
-      std::cout << board[i][j];
+      if ((board[i][j] == '[') || (board[i][j] == ']'))
+        std::cout << "\033[1;" << color_board[i][j] << "m" << board[i][j]
+                  << "\033[0m";
+      else
+        std::cout << board[i][j];
     }
     std::cout << std::endl;
   }
@@ -112,9 +125,11 @@ void Board::draw_shape(Shape *shape, const int &row, const int &col,
   for (size_t r = 0; r < s.size(); r++)
     // s.size() * 2 because using double spacing tiles: []
     for (size_t c = 0; c < s.size() * 2; c++) {
-      if (s[r][c] != ' ')
+      if (s[r][c] != ' ') {
         // -4 for wall offset (2 spaces for each side)
         board[r + row][c + col - 4] = s[r][c];
+        color_board[r + row][c + col - 4] = shape->color();
+      }
     }
 }
 
@@ -159,6 +174,9 @@ int Board ::clear_line(const std::vector<int> &row) {
   board.erase(board.begin() + row[0],
               board.begin() + row[0] + num_rows_to_modify);
 
+  color_board.erase(color_board.begin() + row[0],
+                    color_board.begin() + row[0] + num_rows_to_modify);
+
   // insert back deleted rows at the top
   std::vector<char> blank_row;
   for (int i = 0; i < get_board_width(); i++) {
@@ -168,8 +186,13 @@ int Board ::clear_line(const std::vector<int> &row) {
       blank_row.push_back(' ');
   }
 
-  for (int i = 0; i < num_rows_to_modify; i++)
+  std::vector<int> blank_color_row;
+  for (int i = 0; i < get_board_width(); i++) blank_color_row.push_back(37);
+
+  for (int i = 0; i < num_rows_to_modify; i++) {
     board.insert(board.begin() + 4, blank_row);
+    color_board.insert(color_board.begin() + 4, blank_color_row);
+  }
 
   return num_rows_to_modify;
 }
