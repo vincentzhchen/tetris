@@ -45,6 +45,7 @@ class GameState {
   void move_left();
   void move_right();
   void move_down();
+  void move_up();
   void rotate();
   void reset_position();
 

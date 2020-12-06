@@ -85,6 +85,7 @@ const int GameState::next_rot() { return (curr_rot() + 90) % 360; }
 void GameState::move_left() { _curr_col -= 2; }
 void GameState::move_right() { _curr_col += 2; }
 void GameState::move_down() { _curr_row += 1; }
+void GameState::move_up() { _curr_row -= 1; }
 void GameState::rotate() { _curr_rotation = (_curr_rotation + 90) % 360; }
 void GameState::reset_position() {
   _curr_rotation = _curr_rotation_init;

@@ -101,24 +101,6 @@ void Board::draw() {
 }
 
 /**
- * Let the board check for collision since it has access to all the data.
- */
-bool Board::is_collide(Shape *shape, const int &row, const int &col,
-                       const int &rotation) {
-  std::vector<std::vector<char>> s = shape->get_orientation(rotation);
-  for (size_t r = 0; r < s.size(); r++)
-    // s.size() * 2 because using double spacing tiles: []
-    for (size_t c = 0; c < s.size() * 2; c++) {
-      if ((s[r][c] == '[' || s[r][c] == ']') &&
-          // - 4 to remove offset from wall
-          (fixed_board[r + row][c + col - 4] != ' '))
-        return true;
-    }
-
-  return false;
-}
-
-/**
  * This draws a shape onto the board.  Nothing to console.
  */
 void Board::draw_shape(Shape *shape, const int &row, const int &col,
@@ -128,12 +110,32 @@ void Board::draw_shape(Shape *shape, const int &row, const int &col,
   for (size_t r = 0; r < s.size(); r++)
     // s.size() * 2 because using double spacing tiles: []
     for (size_t c = 0; c < s.size() * 2; c++) {
-      if (s[r][c] != ' ') {
-        // -4 for wall offset (2 spaces for each side)
-        board[r + row][c + col - 4] = s[r][c];
-        color_board[r + row][c + col - 4] = shape->color();
+      int y = r + row;
+      int x = c + col - board::OFFSET_LR;
+      if ((s[r][c] != ' ') && (y >= board::OFFSET_FROM_TOP)) {
+        board[y][x] = s[r][c];
+        color_board[y][x] = shape->color();
       }
     }
+}
+
+/**
+ * Let the board check for collision since it has access to all the data.
+ */
+bool Board::is_collide(Shape *shape, const int &row, const int &col,
+                       const int &rotation) {
+  std::vector<std::vector<char>> s = shape->get_orientation(rotation);
+  for (size_t r = 0; r < s.size(); r++)
+    // s.size() * 2 because using double spacing tiles: []
+    for (size_t c = 0; c < s.size() * 2; c++) {
+      int y = r + row;
+      int x = c + col - board::OFFSET_LR;
+      if (y >= board::OFFSET_FROM_TOP)
+        if ((s[r][c] == '[' || s[r][c] == ']') && (fixed_board[y][x] != ' '))
+          return true;
+    }
+
+  return false;
 }
 
 void Board::save_state() { fixed_board = board; }

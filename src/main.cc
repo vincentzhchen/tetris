@@ -59,6 +59,13 @@ int main() {
                             state.next_rot()))
         state.rotate();
 
+    // this happens when the board is filled up all the way to the
+    // spawn area... keep shifting the shape up until the bottom of
+    // it fits
+    while (board.is_collide(shape, state.curr_row(), state.curr_col(),
+                            state.curr_rot()))
+      state.move_up();
+
     board.draw_shape(shape, state.curr_row(), state.curr_col(),
                      state.curr_rot());
 
