@@ -99,7 +99,7 @@ class ShapeJ : public Shape {
 
  private:
   const std::string shape_name = "Shape J";
-  const int shape_color = color::BLACK;
+  const int shape_color = color::WHITE;
 
   // []....
   // [][][]
