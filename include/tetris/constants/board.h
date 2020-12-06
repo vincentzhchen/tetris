@@ -34,5 +34,6 @@ const int OFFSET_LR = OFFSET_FROM_LEFT + OFFSET_FROM_RIGHT;
 const char EMPTY_SYMBOL = ' ';
 const char HORZ_SYMBOL = '-';
 const char VERT_SYMBOL = '|';
+const char LINE_SYMBOL = '=';
 
 }  // namespace board

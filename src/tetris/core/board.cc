@@ -26,6 +26,15 @@
 Board::Board(int h, int w) {
   _height = h;
   _width = w * 2;  // * 2 because this game uses double-width block
+
+  std::vector<char> _mid_row(width(), board::EMPTY_SYMBOL);
+  // draw the left and right board onto the empty row
+  _mid_row.at(1) = _mid_row.at(width() - 2) = board::VERT_SYMBOL;
+  blank_mid_row = _mid_row;  // store this, frequently used
+
+  std::vector<int> _blank_color_row(width(), color::WHITE);
+  blank_color_row = _blank_color_row;  // store this, frequently used
+
   initialize_board();
 }
 
@@ -49,13 +58,9 @@ int Board::width(bool incl_boarder) {
  * Creates the game map in a matrix (vector of vector).
  */
 void Board::initialize_board() {
-  std::vector<char> top_bot_boarder(width(), board::HORZ_SYMBOL);
-  std::vector<char> mid_row(width(), board::EMPTY_SYMBOL);
-  // draw the left and right board onto the empty row
-  mid_row.at(1) = mid_row.at(width() - 2) = board::VERT_SYMBOL;
-
-  std::vector<std::vector<char>> b(height(), mid_row);
+  std::vector<std::vector<char>> b(height(), blank_mid_row);
   // draw the top and bottom board over the first and last row
+  std::vector<char> top_bot_boarder(width(), board::HORZ_SYMBOL);
   b.at(0) = b.at(height() - 1) = top_bot_boarder;
 
   empty_board = b;
@@ -67,8 +72,7 @@ void Board::initialize_board() {
   set_fixed_board(empty_board);
 
   // color board is parallel to active board and defaulted to white
-  std::vector<int> color_row(width(), color::WHITE);
-  std::vector<std::vector<int>> cb(height(), color_row);
+  std::vector<std::vector<int>> cb(height(), blank_color_row);
   color_board = cb;
 }
 
@@ -82,6 +86,8 @@ void Board::set_board(std::vector<std::vector<char>> b) { board = b; }
 void Board::set_fixed_board(std::vector<std::vector<char>> b) {
   fixed_board = b;
 }
+
+void Board::save_state() { fixed_board = board; }
 
 /**
  * Prints board to console.
@@ -112,11 +118,18 @@ void Board::draw_shape(Shape *shape, const int &row, const int &col,
     for (size_t c = 0; c < s.size() * 2; c++) {
       int y = r + row;
       int x = c + col - board::OFFSET_LR;
-      if ((s[r][c] != ' ') && (y >= board::OFFSET_FROM_TOP)) {
+      if ((s[r][c] != board::EMPTY_SYMBOL) && (y >= board::OFFSET_FROM_TOP)) {
         board[y][x] = s[r][c];
         color_board[y][x] = shape->color();
       }
     }
+}
+
+void Board::draw_line(const std::vector<int> &row) {
+  std::vector<char> line_clear(width(), board::LINE_SYMBOL);
+  line_clear.at(0) = line_clear.at(width() - 1) = board::EMPTY_SYMBOL;
+  line_clear.at(1) = line_clear.at(width() - 2) = board::VERT_SYMBOL;
+  for (size_t r = 0; r < row.size(); r++) board[row[r]] = line_clear;
 }
 
 /**
@@ -131,14 +144,13 @@ bool Board::is_collide(Shape *shape, const int &row, const int &col,
       int y = r + row;
       int x = c + col - board::OFFSET_LR;
       if (y >= board::OFFSET_FROM_TOP)
-        if ((s[r][c] == '[' || s[r][c] == ']') && (fixed_board[y][x] != ' '))
+        if ((s[r][c] == '[' || s[r][c] == ']') &&
+            (fixed_board[y][x] != board::EMPTY_SYMBOL))
           return true;
     }
 
   return false;
 }
-
-void Board::save_state() { fixed_board = board; }
 
 bool Board::is_valid_board() {
   std::vector<char> &first_field_row = fixed_board[board::OFFSET_FROM_TOP];
@@ -154,23 +166,16 @@ std::vector<int> Board::get_line(Shape *shape, const int &row, const int &col,
   std::vector<int> line_num;
   // for the placed shape...
   for (size_t r = 0; r < s.size(); r++) {
-    int check_row = r + row;
-    if (check_row < height()) {
+    int y = r + row;
+    if (y < height()) {
       // if there is only 2 white space from boarder, this is a line
-      if (std::count(fixed_board[r + row].begin(), fixed_board[r + row].end(),
+      if (std::count(fixed_board[y].begin(), fixed_board[y].end(),
                      board::EMPTY_SYMBOL) == 2) {
-        line_num.push_back(check_row);
+        line_num.push_back(y);
       }
     }  // bottom border guard
   }    // for loop
   return line_num;
-}
-
-void Board::draw_line(const std::vector<int> &row) {
-  std::vector<char> line_clear(width(), '=');
-  line_clear.at(0) = line_clear.at(width() - 1) = board::EMPTY_SYMBOL;
-  line_clear.at(1) = line_clear.at(width() - 2) = board::VERT_SYMBOL;
-  for (size_t r = 0; r < row.size(); r++) board[row[r]] = line_clear;
 }
 
 /**
@@ -187,19 +192,8 @@ int Board ::clear_line(const std::vector<int> &row) {
                     color_board.begin() + row[0] + num_rows_to_modify);
 
   // insert back deleted rows at the top
-  std::vector<char> blank_row;
-  for (int i = 0; i < width(); i++) {
-    if (i == 1 || i == width() - 2)
-      blank_row.push_back('|');
-    else
-      blank_row.push_back(' ');
-  }
-
-  std::vector<int> blank_color_row;
-  for (int i = 0; i < width(); i++) blank_color_row.push_back(37);
-
   for (int i = 0; i < num_rows_to_modify; i++) {
-    board.insert(board.begin() + board::OFFSET_FROM_TOP, blank_row);
+    board.insert(board.begin() + board::OFFSET_FROM_TOP, blank_mid_row);
     color_board.insert(color_board.begin() + board::OFFSET_FROM_TOP,
                        blank_color_row);
   }

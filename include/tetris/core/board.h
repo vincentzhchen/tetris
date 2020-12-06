@@ -51,6 +51,8 @@ class Board {
   std::vector<std::vector<char>> fixed_board;  // holds fixed position items
   std::vector<std::vector<int>> color_board;   // holds ansi color code
   std::vector<std::vector<char>> board;
+  std::vector<char> blank_mid_row;
+  std::vector<int> blank_color_row;
 
   void initialize_board();
   void set_board(std::vector<std::vector<char>> b);
