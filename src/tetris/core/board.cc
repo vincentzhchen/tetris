@@ -87,6 +87,9 @@ void Board::set_fixed_board(std::vector<std::vector<char>> b) {
   fixed_board = b;
 }
 
+std::vector<std::vector<char>> Board::get_board() { return board; }
+std::vector<std::vector<int>> Board::get_color_board() { return color_board; }
+
 void Board::save_state() { fixed_board = board; }
 
 /**

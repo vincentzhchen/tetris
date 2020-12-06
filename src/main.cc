@@ -16,7 +16,9 @@
 
 #include <tetris/core/board.h>
 #include <tetris/core/game_state.h>
+#include <tetris/core/info_panel.h>
 #include <tetris/core/shape.h>
+#include <tetris/util/display.h>
 #include <tetris/util/user_input.h>
 
 #include <iostream>
@@ -30,10 +32,15 @@ int main() {
   GameState state(1, board.width() / 2, 0);
   // Shape *shape = state.get_random_shape();  // spawn a shape
   Shape *shape = state.get_shape('I');  // specific shape for debugging
-
   // initial spawn
   board.draw_shape(shape, state.curr_row(), state.curr_col(), state.curr_rot());
-  board.draw();
+
+  info::NextShape ns_panel;
+  // next shape
+  Shape *next_shape = state.get_random_shape();
+  ns_panel.draw_shape(next_shape, state.curr_rot());
+
+  display::display_all(board, ns_panel);
 
   KeyPress kp;
   while (!state.game_over()) {
@@ -86,7 +93,7 @@ int main() {
       board.save_state();
 
       // show the line clear
-      board.draw();
+      display::display_all(board, ns_panel);
       state.apply_line_clear_delay();  // delay to keep visible
 
       int num_lines = board.clear_line(line_num);
@@ -96,14 +103,16 @@ int main() {
       // check if the saved board is good
       if (board.is_valid_board()) {  // reset state if it is
         state.reset_position();
-        shape = state.get_random_shape();  // spawn another shape
+        shape = next_shape;
+        next_shape = state.get_random_shape();  // spawn another shape
+        ns_panel.draw_shape(next_shape, state.curr_rot());
       } else {
         // game over if board is not valid
         state.end_game();
       }
     }
 
-    board.draw();
+    display::display_all(board, ns_panel);
     std::cout << "SCORE: " << state.score() << std::endl;
   }  // end while loop
   return 0;

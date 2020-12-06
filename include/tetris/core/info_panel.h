@@ -20,31 +20,21 @@
 
 #include <vector>
 
-class Board {
+namespace info {
+class NextShape {
  public:
   // standard board size is 10 wide and 20 high
-  explicit Board(int height = 20, int width = 10);  // constructor
+  explicit NextShape(int height = 7, int width = 5);  // constructor
 
   // setters and getters
   void save_state();
-  std::vector<int> get_line(Shape *shape, const int &row, const int &col,
-                            const int &rotation);
   int height(bool incl_boarder = true);
   int width(bool incl_boarder = true);
   std::vector<std::vector<char>> get_board();
   std::vector<std::vector<int>> get_color_board();
 
   // drawing
-  void draw();
-  void draw_shape(Shape *shape, const int &row, const int &col,
-                  const int &rotation);
-  void draw_line(std::vector<int> const &row);
-  int clear_line(const std::vector<int> &row);
-
-  // logic
-  bool is_collide(Shape *shape, const int &row, const int &col,
-                  const int &rotation);
-  bool is_valid_board();
+  void draw_shape(Shape *shape, const int &rotation);
 
  private:
   int _width;   // nun cols for playing field
@@ -58,6 +48,6 @@ class Board {
 
   void initialize_board();
   void set_board(std::vector<std::vector<char>> b);
-  void set_fixed_board(std::vector<std::vector<char>> b);
   void reset_board();
 };
+}  // namespace info
