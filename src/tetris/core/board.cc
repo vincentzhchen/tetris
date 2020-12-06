@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#include <tetris/constants/board.h>
 #include <tetris/core/board.h>
 
 #include <algorithm>
@@ -23,46 +24,52 @@
  * Construct a board on instantiation.
  */
 Board::Board(int h, int w) {
-  height = h + 4 + 1;  // 4 hidden rows + 1 bottom border
-  width = w * 2 + 4;   // * 2 for double width block, +4 for left/right boarder
-  initialize_board(height, width);
+  _height = h;
+  _width = w * 2;  // * 2 because this game uses double-width block
+  initialize_board();
+}
+
+int Board::height(bool incl_boarder) {
+  if (incl_boarder) {
+    return _height + board::TOP_BORDER_WIDTH + board::BOTTOM_BORDER_WIDTH;
+  } else {
+    return _height;
+  }
+}
+
+int Board::width(bool incl_boarder) {
+  if (incl_boarder) {
+    return _width + board::LEFT_BORDER_WIDTH + board::RIGHT_BORDER_WIDTH;
+  } else {
+    return _width;
+  }
 }
 
 /**
  * Creates the game map in a matrix (vector of vector).
  */
-void Board::initialize_board(int height, int width) {
-  for (int i = 0; i < height; i++) {
-    std::vector<char> row;
-    if (i < 4) {
-      // hidden rows for shape spawn
-      for (int j = 0; j < width; j++) row.push_back(' ');
-    } else if (i == height - 1) {
-      // bottom border
-      for (int j = 0; j < width; j++) row.push_back('-');
-    } else {
-      // the actual board
-      for (int j = 0; j < width; j++) {
-        if ((j == 1) | (j == width - 2)) {
-          row.push_back('|');
-        } else {
-          row.push_back(' ');
-        }
-      }
-    }
-    empty_board.push_back(row);
-  }
+void Board::initialize_board() {
+  std::vector<char> top_bot_boarder(width(), board::HORZ_SYMBOL);
+  std::vector<char> mid_row(width(), board::EMPTY_SYMBOL);
+  // draw the left and right board onto the empty row
+  mid_row.at(1) = mid_row.at(width() - 2) = board::VERT_SYMBOL;
+
+  std::vector<std::vector<char>> b(height(), mid_row);
+  // draw the top and bottom board over the first and last row
+  b.at(0) = b.at(height() - 1) = top_bot_boarder;
+
+  empty_board = b;
+
+  // set the active board
   set_board(empty_board);
+
+  // fixed board is the same as the active board on initialization
   set_fixed_board(empty_board);
 
-  // color board
-  for (int i = 0; i < height; i++) {
-    std::vector<int> row;
-    for (int j = 0; j < width; j++) {
-      row.push_back(37);  // white
-    }
-    color_board.push_back(row);
-  }
+  // color board is parallel to active board and defaulted to white
+  std::vector<int> color_row(width(), color::WHITE);
+  std::vector<std::vector<int>> cb(height(), color_row);
+  color_board = cb;
 }
 
 /**
@@ -81,8 +88,8 @@ void Board::set_fixed_board(std::vector<std::vector<char>> b) {
  */
 void Board::draw() {
   system("clear");
-  for (int i = 0; i < get_board_height(); i++) {
-    for (int j = 0; j < get_board_width(); j++) {
+  for (int i = 0; i < height(); i++) {
+    for (int j = 0; j < width(); j++) {
       if ((board[i][j] == '[') || (board[i][j] == ']'))
         std::cout << "\033[1;" << color_board[i][j] << "m" << board[i][j]
                   << "\033[0m";
@@ -92,10 +99,6 @@ void Board::draw() {
     std::cout << std::endl;
   }
 }
-
-int Board::get_board_height() { return height; }
-
-int Board::get_board_width() { return width; }
 
 /**
  * Let the board check for collision since it has access to all the data.
@@ -136,8 +139,10 @@ void Board::draw_shape(Shape *shape, const int &row, const int &col,
 void Board::save_state() { fixed_board = board; }
 
 bool Board::is_valid_board() {
-  for (size_t c = 0; c < fixed_board[3].size(); c++)
-    if (fixed_board[3][c] != ' ') return false;
+  std::vector<char> &first_field_row = fixed_board[board::OFFSET_FROM_TOP];
+  for (size_t c = board::OFFSET_FROM_LEFT;
+       c < first_field_row.size() - board::OFFSET_FROM_RIGHT; c++)
+    if (first_field_row[c] != board::EMPTY_SYMBOL) return false;
   return true;
 }
 
@@ -148,10 +153,10 @@ std::vector<int> Board::get_line(Shape *shape, const int &row, const int &col,
   // for the placed shape...
   for (size_t r = 0; r < s.size(); r++) {
     int check_row = r + row;
-    if (check_row < get_board_height()) {
+    if (check_row < height()) {
       // if there is only 2 white space from boarder, this is a line
       if (std::count(fixed_board[r + row].begin(), fixed_board[r + row].end(),
-                     ' ') == 2) {
+                     board::EMPTY_SYMBOL) == 2) {
         line_num.push_back(check_row);
       }
     }  // bottom border guard
@@ -160,8 +165,10 @@ std::vector<int> Board::get_line(Shape *shape, const int &row, const int &col,
 }
 
 void Board::draw_line(const std::vector<int> &row) {
-  for (size_t r = 0; r < row.size(); r++)
-    for (int c = 2; c < get_board_width() - 2; c++) board[row[r]][c] = '=';
+  std::vector<char> line_clear(width(), '=');
+  line_clear.at(0) = line_clear.at(width() - 1) = board::EMPTY_SYMBOL;
+  line_clear.at(1) = line_clear.at(width() - 2) = board::VERT_SYMBOL;
+  for (size_t r = 0; r < row.size(); r++) board[row[r]] = line_clear;
 }
 
 /**
@@ -179,19 +186,20 @@ int Board ::clear_line(const std::vector<int> &row) {
 
   // insert back deleted rows at the top
   std::vector<char> blank_row;
-  for (int i = 0; i < get_board_width(); i++) {
-    if (i == 1 || i == get_board_width() - 2)
+  for (int i = 0; i < width(); i++) {
+    if (i == 1 || i == width() - 2)
       blank_row.push_back('|');
     else
       blank_row.push_back(' ');
   }
 
   std::vector<int> blank_color_row;
-  for (int i = 0; i < get_board_width(); i++) blank_color_row.push_back(37);
+  for (int i = 0; i < width(); i++) blank_color_row.push_back(37);
 
   for (int i = 0; i < num_rows_to_modify; i++) {
-    board.insert(board.begin() + 4, blank_row);
-    color_board.insert(color_board.begin() + 4, blank_color_row);
+    board.insert(board.begin() + board::OFFSET_FROM_TOP, blank_row);
+    color_board.insert(color_board.begin() + board::OFFSET_FROM_TOP,
+                       blank_color_row);
   }
 
   return num_rows_to_modify;

@@ -29,8 +29,8 @@ class Board {
   void save_state();
   std::vector<int> get_line(Shape *shape, const int &row, const int &col,
                             const int &rotation);
-  int get_board_height();
-  int get_board_width();
+  int height(bool incl_boarder = true);
+  int width(bool incl_boarder = true);
 
   // drawing
   void draw();
@@ -45,14 +45,14 @@ class Board {
   bool is_valid_board();
 
  private:
-  int width;   // nun cols
-  int height;  // num rows
+  int _width;   // nun cols for playing field
+  int _height;  // num rows for playing field
   std::vector<std::vector<char>> empty_board;
   std::vector<std::vector<char>> fixed_board;  // holds fixed position items
   std::vector<std::vector<int>> color_board;   // holds ansi color code
   std::vector<std::vector<char>> board;
 
-  void initialize_board(int height, int width);
+  void initialize_board();
   void set_board(std::vector<std::vector<char>> b);
   void set_fixed_board(std::vector<std::vector<char>> b);
   void reset_board();
