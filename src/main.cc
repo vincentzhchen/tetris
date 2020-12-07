@@ -41,8 +41,9 @@ int main() {
   ns_panel.draw_shape(next_shape, state.curr_rot());
 
   info::Score score_panel;
+  info::Lines line_panel;
 
-  display::display_all(board, ns_panel, score_panel);
+  display::display_all(board, ns_panel, score_panel, line_panel);
 
   KeyPress kp;
   while (!state.game_over()) {
@@ -95,7 +96,7 @@ int main() {
       board.save_state();
 
       // show the line clear
-      display::display_all(board, ns_panel, score_panel);
+      display::display_all(board, ns_panel, score_panel, line_panel);
       state.apply_line_clear_delay();  // delay to keep visible
 
       int num_lines = board.clear_line(line_num);
@@ -114,8 +115,9 @@ int main() {
       }
     }
 
-    display::display_all(board, ns_panel, score_panel);
-    std::cout << "SCORE: " << state.score() << std::endl;
+    score_panel.update_score(state.score());
+    line_panel.update_lines(state.lines());
+    display::display_all(board, ns_panel, score_panel, line_panel);
   }  // end while loop
   return 0;
 }

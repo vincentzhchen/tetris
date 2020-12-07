@@ -27,6 +27,7 @@ class GameState {
   // game management
   const bool &game_over();
   const int &score();
+  const int &lines();
   void update_score(const int &num_lines);
   void end_game();
   void apply_game_speed_delay();
@@ -51,8 +52,9 @@ class GameState {
 
  private:
   // game management
-  bool _game_over;
-  int _score;
+  bool _game_over = false;
+  int _score = 0;
+  int _lines = 0;
 
   // shape management
   std::array<Shape *, 7> all_shapes{new ShapeI(), new ShapeJ(), new ShapeL(),

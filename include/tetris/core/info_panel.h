@@ -35,7 +35,17 @@ class NextShape : public matrix::Matrix {
 
 class Score : public matrix::Matrix {
  public:
-  explicit Score(int height = 4, int width = 5);  // constructor
+  explicit Score(int height = 6, int width = 5);  // constructor
+  void update_score(int score);
+
+ private:
+  virtual void initialize_matrix();
+};
+
+class Lines : public matrix::Matrix {
+ public:
+  explicit Lines(int height = 3, int width = 5);  // constructor
+  void update_lines(int lines);
 
  private:
   virtual void initialize_matrix();

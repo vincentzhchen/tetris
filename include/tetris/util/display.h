@@ -21,7 +21,7 @@
 
 namespace display {
 
-void display_all(Board board, info::NextShape ns_panel,
-                 info::Score score_panel);
+void display_all(Board board, info::NextShape ns_panel, info::Score score_panel,
+                 info::Lines line_panel);
 
 }  // namespace display

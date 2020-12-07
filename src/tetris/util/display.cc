@@ -21,8 +21,8 @@
 
 namespace display {
 
-void display_all(Board board, info::NextShape ns_panel,
-                 info::Score score_panel) {
+void display_all(Board board, info::NextShape ns_panel, info::Score score_panel,
+                 info::Lines line_panel) {
   std::vector<std::vector<char>> b = board.matrix();
   std::vector<std::vector<int>> cb = board.color_matrix();
 
@@ -30,6 +30,7 @@ void display_all(Board board, info::NextShape ns_panel,
   std::vector<std::vector<int>> cns = ns_panel.color_matrix();
 
   std::vector<std::vector<char>> s = score_panel.matrix();
+  std::vector<std::vector<char>> l = line_panel.matrix();
 
   system("clear");
   for (int i = 0; i < board.height(); i++) {
@@ -51,9 +52,16 @@ void display_all(Board board, info::NextShape ns_panel,
     }
     // display score
     int offset = ns_panel.height();
-    if ((i >= ns_panel.height()) && (i - offset < score_panel.height())) {
+    if ((i >= offset) && (i - offset < score_panel.height())) {
       for (int j = 0; j < score_panel.width(); j++) {
         std::cout << s[i - offset][j];
+      }
+    }
+    // display lines cleared
+    offset += score_panel.height();
+    if ((i >= offset) && (i - offset < line_panel.height())) {
+      for (int j = 0; j < line_panel.width(); j++) {
+        std::cout << l[i - offset][j];
       }
     }
 
