@@ -52,4 +52,18 @@ void NextShape::draw_shape(Shape *shape, const int &rotation) {
   Matrix::draw(shape, 3, width() / 2, rotation);
 }
 
+Score::Score(int h, int w) : matrix::Matrix(h, w) { initialize_matrix(); }
+
+void Score::initialize_matrix() {
+  std::vector<std::vector<char>> m(height(), blank_mid_row);
+  // draw the top and bottom board over the first and last row
+  std::vector<char> top_bot_boarder(width(), board::HORZ_SYMBOL);
+  m.at(0) = m.at(height() - 1) = top_bot_boarder;
+
+  empty_matrix = m;
+
+  // set the active matrix
+  _matrix = empty_matrix;
+}
+
 }  // namespace info

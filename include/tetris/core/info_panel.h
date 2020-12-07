@@ -33,4 +33,12 @@ class NextShape : public matrix::Matrix {
   virtual void initialize_matrix();
 };
 
+class Score : public matrix::Matrix {
+ public:
+  explicit Score(int height = 4, int width = 5);  // constructor
+
+ private:
+  virtual void initialize_matrix();
+};
+
 }  // namespace info
