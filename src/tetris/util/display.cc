@@ -24,8 +24,8 @@ void display_all(Board board, info::NextShape ns_panel) {
   std::vector<std::vector<char>> b = board.get_board();
   std::vector<std::vector<int>> cb = board.get_color_board();
 
-  std::vector<std::vector<char>> ns = ns_panel.get_board();
-  std::vector<std::vector<int>> cns = ns_panel.get_color_board();
+  std::vector<std::vector<char>> ns = ns_panel.matrix();
+  std::vector<std::vector<int>> cns = ns_panel.color_matrix();
 
   system("clear");
   for (int i = 0; i < board.height(); i++) {

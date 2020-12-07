@@ -12,6 +12,7 @@ add_executable(tetris
     ../src/tetris/core/board.cc
     ../src/tetris/core/game_state.cc
     ../src/tetris/core/info_panel.cc
+    ../src/tetris/core/matrix.cc
     ../src/tetris/core/shape.cc
     ../src/tetris/util/display.cc
     ../src/tetris/util/kb_io.cc
