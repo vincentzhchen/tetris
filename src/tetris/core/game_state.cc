@@ -36,7 +36,7 @@ const int &GameState::lines() { return _lines; }
 
 void GameState::update_score(const int &num_lines) {
   _lines += num_lines;
-  _score += lines() % 4 != 0 ? 25 * lines() : 100 * lines();
+  _score += num_lines % 4 != 0 ? 25 * num_lines : 100 * num_lines;
 }
 
 const bool &GameState::game_over() { return _game_over; }
