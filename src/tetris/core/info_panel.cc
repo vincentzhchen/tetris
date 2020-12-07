@@ -47,6 +47,7 @@ void NextShape::initialize_matrix() {
 }
 
 void NextShape::draw_shape(Shape *shape, const int &rotation) {
+  reset_matrix();
   // use the base method here
   Matrix::draw(shape, 3, width() / 2, rotation);
 }

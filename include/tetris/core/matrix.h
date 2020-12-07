@@ -49,4 +49,5 @@ class Matrix {
   virtual void draw(Shape *shape, const int &row, const int &col,
                     const int &rotation);
 };
+
 }  // namespace matrix

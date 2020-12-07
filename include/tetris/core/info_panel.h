@@ -32,4 +32,5 @@ class NextShape : public matrix::Matrix {
  private:
   virtual void initialize_matrix();
 };
+
 }  // namespace info

@@ -20,9 +20,10 @@
 #include <vector>
 
 namespace display {
+
 void display_all(Board board, info::NextShape ns_panel) {
-  std::vector<std::vector<char>> b = board.get_board();
-  std::vector<std::vector<int>> cb = board.get_color_board();
+  std::vector<std::vector<char>> b = board.matrix();
+  std::vector<std::vector<int>> cb = board.color_matrix();
 
   std::vector<std::vector<char>> ns = ns_panel.matrix();
   std::vector<std::vector<int>> cns = ns_panel.color_matrix();
@@ -49,4 +50,5 @@ void display_all(Board board, info::NextShape ns_panel) {
     std::cout << std::endl;
   }
 }
+
 }  // namespace display

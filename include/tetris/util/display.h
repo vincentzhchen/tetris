@@ -20,5 +20,7 @@
 #include <tetris/core/info_panel.h>
 
 namespace display {
+
 void display_all(Board board, info::NextShape ns);
+
 }  // namespace display

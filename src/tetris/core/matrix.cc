@@ -64,7 +64,6 @@ void Matrix::reset_matrix() { _matrix = empty_matrix; }
  */
 void Matrix::draw(Shape *shape, const int &row, const int &col,
                   const int &rotation) {
-  reset_matrix();
   std::vector<std::vector<char>> s = shape->get_orientation(rotation);
   for (size_t r = 0; r < s.size(); r++)
     // s.size() * 2 because using double spacing tiles: []
