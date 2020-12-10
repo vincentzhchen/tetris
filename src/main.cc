@@ -38,6 +38,7 @@ int main() {
   info::NextShape ns_panel;
   // next shape
   Shape *next_shape = state.get_random_shape();
+  // Shape *next_shape = state.get_shape('I');  // specific shape for debugging
   ns_panel.draw_shape(next_shape, state.curr_rot());
 
   info::Score score_panel;
@@ -108,6 +109,7 @@ int main() {
         state.reset_position();
         shape = next_shape;
         next_shape = state.get_random_shape();  // spawn another shape
+        // next_shape = state.get_shape('I');  // specific shape for debugging
         ns_panel.draw_shape(next_shape, state.curr_rot());
       } else {
         // game over if board is not valid

@@ -89,9 +89,12 @@ bool Board::is_collide(Shape *shape, const int &row, const int &col,
 }
 
 bool Board::is_valid_board() {
+  // this is first row that can have a tetris piece
   std::vector<char> &first_field_row = fixed_matrix[board::OFFSET_FROM_TOP];
   for (size_t c = board::OFFSET_FROM_LEFT;
        c < first_field_row.size() - board::OFFSET_FROM_RIGHT; c++)
+    // if any of the pieces are on the first field row,
+    // then the board is invalid
     if (first_field_row[c] != board::EMPTY_SYMBOL) return false;
   return true;
 }
@@ -100,13 +103,14 @@ std::vector<int> Board::get_line(Shape *shape, const int &row, const int &col,
                                  const int &rotation) {
   std::vector<std::vector<char>> s = shape->get_orientation(rotation);
   std::vector<int> line_num;
+  line_num.reserve(4);  // cannot be more than 4 lines
   // for the placed shape...
   for (size_t r = 0; r < s.size(); r++) {
     int y = r + row;
     if (y < height()) {
-      // if there is only 2 white space from boarder, this is a line
+      // if half the playing field is the left of a block, then this is a line
       if (std::count(fixed_matrix[y].begin(), fixed_matrix[y].end(),
-                     board::EMPTY_SYMBOL) == 2) {
+                     '[') == (width() - board::OFFSET_LR) / 2) {
         line_num.push_back(y);
       }
     }  // bottom border guard
